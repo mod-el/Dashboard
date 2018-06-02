@@ -1,0 +1,15 @@
+{
+	"name": "Dashboard",
+	"description": "Admin dashboard",
+	"version": "0.0.1",
+	"dependencies": {
+		"AdminFront": ">=0.1.3",
+		"Bootstrap": ">=0.0.1"
+	},
+	"file-types": {
+		"Card": {
+			"folder": "Cards",
+			"class": true
+		}
+	}
+}
