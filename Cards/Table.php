@@ -58,7 +58,7 @@ class Table extends Card
 						foreach ($list as $element) {
 							$form = $element->getForm();
 							?>
-							<tr<?php if ($rule) { ?> onclick="loadAdminPage(['<?= $rule ?>', 'edit', '<?= $element['id'] ?>']); return false"<?php } ?>>
+							<tr<?php if ($rule) { ?> onclick="loadElement('<?= $rule ?>', '<?= $element['id'] ?>'); return false"<?php } ?>>
 								<?php
 								foreach ($options['columns'] as $k => $c) {
 									if (!is_string($c) and is_callable($c)) {
