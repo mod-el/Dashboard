@@ -15,6 +15,10 @@ class Table extends Card
 			'columns' => [],
 			'limit' => 5,
 			'order_by' => 'id DESC',
+			'group_by' => false,
+			'having' => [],
+			'sum' => [],
+			'max' => [],
 		], $options);
 
 		$rule = null;
@@ -30,6 +34,10 @@ class Table extends Card
 			'table' => $options['table'],
 			'limit' => $options['limit'],
 			'order_by' => $options['order_by'],
+			'group_by' => $options['group_by'],
+			'having' => $options['having'],
+			'sum' => $options['sum'],
+			'max' => $options['max'],
 		]);
 
 		if ($options['title']) {
