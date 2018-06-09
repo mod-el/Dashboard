@@ -10,20 +10,10 @@ class Total extends Card
 			'title' => null,
 			'text1' => null,
 			'text2' => null,
-			'admin-page' => null,
-			'table' => null,
-			'element' => null,
 			'where' => [],
 		], $options);
 
-		$rule = null;
-		if ($options['admin-page']) {
-			$options = $this->useAdminPageOptions($options);
-			$rule = $this->model->_AdminFront->getRuleForPage($options['admin-page']);
-		}
-
-		if (!$options['element'])
-			$options['element'] = 'Element';
+		$options = $this->getBasicOptions($options);
 
 		$tot = $this->model->_ORM->count($options['element'], $options['where'], [
 			'table' => $options['table'],
@@ -50,9 +40,9 @@ class Total extends Card
 				<h5 class="card-title"><?= entities($options['text2']) ?></h5>
 				<?php
 			}
-			if ($rule) {
+			if ($options['rule']) {
 				?>
-				<a href="<?= $this->model->_AdminFront->getUrlPrefix() . $rule ?>" onclick="loadAdminPage(['<?= $rule ?>']); return false" class="card-link">Vai alla lista</a>
+				<a href="<?= $this->model->_AdminFront->getUrlPrefix() . $options['rule'] ?>" onclick="loadAdminPage(['<?= $options['rule'] ?>']); return false" class="card-link">Vai alla lista</a>
 				<?php
 			}
 			?>

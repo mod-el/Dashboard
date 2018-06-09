@@ -20,6 +20,26 @@ abstract class Card
 
 	abstract public function render(array $options);
 
+	protected function getBasicOptions(array $options): array
+	{
+		$options = array_merge([
+			'admin-page' => null,
+			'rule' => null,
+			'table' => null,
+			'element' => null,
+		], $options);
+
+		if ($options['admin-page']) {
+			$options = $this->useAdminPageOptions($options);
+			$options['rule'] = $this->model->_AdminFront->getRuleForPage($options['admin-page']);
+		}
+
+		if (!$options['element'])
+			$options['element'] = 'Element';
+
+		return $options;
+	}
+
 	protected function getAdminPage(string $page): AdminPage
 	{
 		$className = Autoloader::searchFile('AdminPage', $page);

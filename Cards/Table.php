@@ -8,9 +8,6 @@ class Table extends Card
 	{
 		$options = array_merge([
 			'title' => null,
-			'admin-page' => null,
-			'table' => null,
-			'element' => null,
 			'where' => [],
 			'columns' => [],
 			'limit' => 5,
@@ -21,14 +18,7 @@ class Table extends Card
 			'max' => [],
 		], $options);
 
-		$rule = null;
-		if ($options['admin-page']) {
-			$options = $this->useAdminPageOptions($options);
-			$rule = $this->model->_AdminFront->getRuleForPage($options['admin-page']);
-		}
-
-		if (!$options['element'])
-			$options['element'] = 'Element';
+		$options = $this->getBasicOptions($options);
 
 		$list = $this->model->_ORM->all($options['element'], $options['where'], [
 			'table' => $options['table'],
@@ -66,7 +56,7 @@ class Table extends Card
 						foreach ($list as $element) {
 							$form = $element->getForm();
 							?>
-							<tr<?php if ($rule) { ?> onclick="loadElement('<?= $rule ?>', '<?= $element['id'] ?>'); return false"<?php } ?>>
+							<tr<?php if ($options['rule']) { ?> onclick="loadElement('<?= $options['rule'] ?>', '<?= $element['id'] ?>'); return false"<?php } ?>>
 								<?php
 								foreach ($options['columns'] as $k => $c) {
 									if (!is_string($c) and is_callable($c)) {
@@ -87,10 +77,10 @@ class Table extends Card
 				</table>
 			</div>
 			<?php
-			if ($rule) {
+			if ($options['rule']) {
 				?>
 				<div class="text-center">
-					<a href="<?= $this->model->_AdminFront->getUrlPrefix() . $rule ?>" onclick="loadAdminPage(['<?= $rule ?>']); return false" class="card-link">Vai alla lista</a>
+					<a href="<?= $this->model->_AdminFront->getUrlPrefix() . $options['rule'] ?>" onclick="loadAdminPage(['<?= $options['rule'] ?>']); return false" class="card-link">Vai alla lista</a>
 				</div>
 				<?php
 			}
