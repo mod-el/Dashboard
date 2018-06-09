@@ -75,4 +75,24 @@ abstract class Card
 
 		return $options;
 	}
+
+	protected function renderTitle(array $options)
+	{
+		if ($options['title'] ?? null) {
+			?>
+			<div class="card-header text-center" style="font-size: 1.5rem"><?= entities($options['title']) ?></div>
+			<?php
+		}
+	}
+
+	protected function renderListLink(array $options)
+	{
+		if ($options['rule'] ?? null) {
+			?>
+			<div class="text-center">
+				<a href="<?= $this->model->_AdminFront->getUrlPrefix() . $options['rule'] ?>" onclick="loadAdminPage(['<?= $options['rule'] ?>']); return false" class="card-link">Vai alla lista</a>
+			</div>
+			<?php
+		}
+	}
 }

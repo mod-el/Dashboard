@@ -7,7 +7,6 @@ class Table extends Card
 	public function render(array $options)
 	{
 		$options = array_merge([
-			'title' => null,
 			'where' => [],
 			'columns' => [],
 			'limit' => 5,
@@ -30,11 +29,7 @@ class Table extends Card
 			'max' => $options['max'],
 		]);
 
-		if ($options['title']) {
-			?>
-			<div class="card-header text-center" style="font-size: 1.5rem"><?= entities($options['title']) ?></div>
-			<?php
-		}
+		$this->renderTitle($options);
 		?>
 		<div class="card-body">
 			<div class="table-responsive">
@@ -77,13 +72,7 @@ class Table extends Card
 				</table>
 			</div>
 			<?php
-			if ($options['rule']) {
-				?>
-				<div class="text-center">
-					<a href="<?= $this->model->_AdminFront->getUrlPrefix() . $options['rule'] ?>" onclick="loadAdminPage(['<?= $options['rule'] ?>']); return false" class="card-link">Vai alla lista</a>
-				</div>
-				<?php
-			}
+			$this->renderListLink($options);
 			?>
 		</div>
 		<?php
