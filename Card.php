@@ -8,14 +8,18 @@ abstract class Card
 {
 	/** @var Core */
 	protected $model;
+	/** @var int */
+	protected $idx;
 
 	/**
 	 * Card constructor.
 	 * @param Core $model
+	 * @param int $idx
 	 */
-	public function __construct(Core $model)
+	public function __construct(Core $model, int $idx = 0)
 	{
 		$this->model = $model;
+		$this->idx = $idx;
 	}
 
 	abstract public function render(array $options);

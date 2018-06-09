@@ -7,6 +7,7 @@ class Dashboard extends Module
 {
 	public function render(array $cards)
 	{
+		$totalCards = 0;
 		foreach ($cards as $row) {
 			?>
 			<div class="row">
@@ -27,8 +28,10 @@ class Dashboard extends Module
 								if (!$className)
 									$this->model->error('No card type named "' . $cardOptions['type'] . '"');
 
-								$card = new $className($this->model);
+								$card = new $className($this->model, $totalCards);
 								$card->render($cardOptions['options']);
+
+								$totalCards++;
 								?>
 							</div>
 							<?php
