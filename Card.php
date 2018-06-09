@@ -95,4 +95,15 @@ abstract class Card
 			<?php
 		}
 	}
+
+	/**
+	 * Converts a field name in a human-readable label
+	 *
+	 * @param string $k
+	 * @return string
+	 */
+	protected function getLabel(string $k): string
+	{
+		return ucwords(str_replace(array('-', '_'), ' ', $k));
+	}
 }

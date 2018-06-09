@@ -77,15 +77,4 @@ class Table extends Card
 		</div>
 		<?php
 	}
-
-	/**
-	 * Converts a field name in a human-readable label
-	 *
-	 * @param string $k
-	 * @return string
-	 */
-	public function getLabel(string $k): string
-	{
-		return ucwords(str_replace(array('-', '_'), ' ', $k));
-	}
 }
