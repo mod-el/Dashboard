@@ -74,11 +74,14 @@ class LineChart extends Card
 
 			switch ($options['label-type']) {
 				case 'timeseries':
+					if (!isset($options['label-format']))
+						$options['label-format'] = '%d/%m/%Y';
+
 					$chartOptions['axis'] = [
 						'x' => [
 							'type' => $options['label-type'],
 							'tick' => [
-								'format' => '%m/%Y',
+								'format' => $options['label-format'],
 							],
 						],
 					];
