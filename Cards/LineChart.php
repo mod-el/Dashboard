@@ -8,6 +8,7 @@ class LineChart extends Card
 	{
 		$options = array_merge([
 			'title' => null,
+			'data' => null,
 			'where' => [],
 			'limit' => null,
 			'order_by' => null,
@@ -19,21 +20,25 @@ class LineChart extends Card
 
 		$options = $this->getBasicOptions($options);
 
-		if ($options['group_by']) {
-			if (!$options['label'])
-				$options['label'] = $options['group_by'];
-			if (!$options['order_by'])
-				$options['order_by'] = $options['group_by'];
-		}
+		if ($options['data']) {
+			$list = is_callable($options['data']) ? $options['data']() : $options['data'];
+		} else {
+			if ($options['group_by']) {
+				if (!$options['label'])
+					$options['label'] = $options['group_by'];
+				if (!$options['order_by'])
+					$options['order_by'] = $options['group_by'];
+			}
 
-		$list = $this->model->_Db->select_all($options['table'], $options['where'], [
-			'limit' => $options['limit'],
-			'order_by' => $options['order_by'],
-			'group_by' => $options['group_by'],
-			'having' => $options['having'],
-			'sum' => $options['sum'],
-			'max' => $options['max'],
-		]);
+			$list = $this->model->_Db->select_all($options['table'], $options['where'], [
+				'limit' => $options['limit'],
+				'order_by' => $options['order_by'],
+				'group_by' => $options['group_by'],
+				'having' => $options['having'],
+				'sum' => $options['sum'],
+				'max' => $options['max'],
+			]);
+		}
 
 		$this->renderTitle($options);
 		?>
