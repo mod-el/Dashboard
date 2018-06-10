@@ -24,7 +24,7 @@ class LineChart extends Card
 			$list = is_callable($options['data']) ? $options['data']() : $options['data'];
 		} else {
 			if ($options['group_by']) {
-				if (!$options['label'])
+				if (!isset($options['label']))
 					$options['label'] = $options['group_by'];
 				if (!$options['order_by'])
 					$options['order_by'] = $options['group_by'];
