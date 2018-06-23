@@ -1,0 +1,7 @@
+a.card-body:link, a.card-body:visited {
+	color: #333;
+}
+
+a.card-body:hover {
+	background: #f8fdff;
+}

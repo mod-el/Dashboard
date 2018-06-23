@@ -12,5 +12,8 @@
 			"folder": "Cards",
 			"class": true
 		}
-	}
+	},
+	"css": [
+		"files/style.css"
+	]
 }

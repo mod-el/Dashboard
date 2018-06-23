@@ -30,6 +30,7 @@ abstract class Card
 			'admin-page' => null,
 			'rule' => null,
 			'table' => null,
+			'where' => [],
 			'element' => null,
 		], $options);
 
