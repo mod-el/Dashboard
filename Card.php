@@ -39,6 +39,9 @@ abstract class Card
 			$options['rule'] = $this->model->_AdminFront->getRuleForPage($options['admin-page']);
 		}
 
+		if ($options['element'] and !$options['table'])
+			$options['table'] = $this->model->_ORM->getTableFor($options['element']);
+
 		if (!$options['element'])
 			$options['element'] = 'Element';
 
@@ -60,9 +63,6 @@ abstract class Card
 			'element' => null,
 			'where' => [],
 		], $adminPage->options());
-
-		if ($options['element'] and !$options['table'])
-			$options['table'] = $this->model->_ORM->getTableFor($options['element']);
 
 		return $options;
 	}

@@ -45,4 +45,31 @@ class Dashboard extends Module
 			<?php
 		}
 	}
+
+	public function getListForCharting(array &$options): iterable
+	{
+		if ($options['data']) {
+			return is_callable($options['data']) ? $options['data']() : $options['data'];
+		} else {
+			if ($options['group_by']) {
+				if (!isset($options['label']))
+					$options['label'] = $options['group_by'];
+				if (!$options['order_by'])
+					$options['order_by'] = $options['group_by'];
+			}
+
+			$qryOptions = [
+				'limit' => $options['limit'],
+				'order_by' => $options['order_by'],
+				'group_by' => $options['group_by'],
+				'having' => $options['having'],
+				'sum' => $options['sum'],
+				'max' => $options['max'],
+			];
+			if ($options['element'] and $options['element'] !== 'Element')
+				return $this->model->_ORM->all($options['element'], $options['where'], $qryOptions);
+			else
+				return $this->model->_Db->select_all($options['table'], $options['where'], $qryOptions);
+		}
+	}
 }

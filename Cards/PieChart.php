@@ -2,7 +2,7 @@
 
 use Model\Dashboard\Card;
 
-class LineChart extends Card
+class PieChart extends Card
 {
 	public function render(array $options)
 	{
@@ -18,7 +18,7 @@ class LineChart extends Card
 			'max' => [],
 
 			'chart-module' => 'C3',
-			'fields' => [],
+			'field' => null,
 			'label' => null,
 			'label-type' => null, // supported at the moment: datetime
 			'values-type' => null, // supported at the moment: price
@@ -35,7 +35,7 @@ class LineChart extends Card
 		<div class="card-body">
 			<?php
 			$options['id'] = 'dashboard-chart-' . $this->idx;
-			$chartModule->lineChart($list, $options);
+			$chartModule->pieChart($list, $options);
 			$this->renderListLink($options);
 			?>
 		</div>
