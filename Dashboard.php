@@ -5,6 +5,27 @@ use Model\Core\Module;
 
 class Dashboard extends Module
 {
+	public function init(array $options)
+	{
+		$config = $this->retrieveConfig();
+		$dependencies = [];
+
+		foreach ($config['cards'] as $row) {
+			foreach ($row as $col) {
+				foreach ($col['cards'] as $card) {
+					if (in_array($card['type'], ['LineChart', 'PieChart'])) {
+						$chartingModule = $card['chart-module'] ?? 'C3';
+						if (!in_array($chartingModule, $dependencies))
+							$dependencies[] = $chartingModule;
+					}
+				}
+			}
+		}
+
+		foreach ($dependencies as $module)
+			$this->model->load($module);
+	}
+
 	public function render(array $cards)
 	{
 		$totalCards = 0;
