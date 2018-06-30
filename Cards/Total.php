@@ -10,13 +10,22 @@ class Total extends Card
 			'text1' => null,
 			'text2' => null,
 			'where' => [],
+			'data' => null,
 		], $options);
 
 		$options = $this->getBasicOptions($options);
 
-		$tot = $this->model->_ORM->count($options['element'], $options['where'], [
-			'table' => $options['table'],
-		]);
+		if ($options['data']) {
+			if (!is_string($options['data']) and is_callable($options['data'])) {
+				$tot = call_user_func($options['data']);
+			} else {
+				$tot = $options['data'];
+			}
+		} else {
+			$tot = $this->model->_ORM->count($options['element'], $options['where'], [
+				'table' => $options['table'],
+			]);
+		}
 
 		$this->renderTitle($options);
 		?>
