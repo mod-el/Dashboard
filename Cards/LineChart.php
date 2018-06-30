@@ -16,6 +16,7 @@ class LineChart extends Card
 			'having' => [],
 			'sum' => [],
 			'max' => [],
+			'chart-module' => 'C3',
 		], $options);
 
 		$options = $this->getBasicOptions($options);
@@ -41,11 +42,13 @@ class LineChart extends Card
 		}
 
 		$this->renderTitle($options);
+
+		$chartModule = $this->model->getModule($options['chart-module']);
 		?>
 		<div class="card-body">
 			<?php
 			$options['id'] = 'dashboard-chart-' . $this->idx;
-			$this->model->_C3->lineChart($list, $options);
+			$chartModule->lineChart($list, $options);
 			$this->renderListLink($options);
 			?>
 		</div>
