@@ -17,7 +17,7 @@ class PieChart extends Card
 			'sum' => [],
 			'max' => [],
 
-			'chart-module' => 'C3',
+			'chart-module' => 'Highcharts',
 			'field' => null,
 			'label' => null,
 			'label-type' => null, // supported at the moment: datetime

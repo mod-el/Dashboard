@@ -17,7 +17,7 @@ class LineChart extends Card
 			'sum' => [],
 			'max' => [],
 
-			'chart-module' => 'C3',
+			'chart-module' => 'Highcharts',
 			'fields' => [],
 			'label' => null,
 			'label-type' => null, // supported at the moment: datetime
