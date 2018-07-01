@@ -14,7 +14,7 @@ class Dashboard extends Module
 			foreach ($row as $col) {
 				foreach ($col['cards'] as $card) {
 					if (in_array($card['type'], ['LineChart', 'PieChart'])) {
-						$chartingModule = $card['chart-module'] ?? 'C3';
+						$chartingModule = $card['options']['chart-module'] ?? 'Highcharts';
 						if (!in_array($chartingModule, $dependencies))
 							$dependencies[] = $chartingModule;
 					}
