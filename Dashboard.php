@@ -31,7 +31,7 @@ class Dashboard extends Module
 		$totalCards = 0;
 		foreach ($cards as $row) {
 			?>
-			<div class="row pb-3">
+			<div class="row">
 				<?php
 				foreach ($row as $col) {
 					if (!isset($col['class'], $col['cards']))
