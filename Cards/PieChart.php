@@ -20,6 +20,7 @@ class PieChart extends Card
 			'chart-module' => 'Highcharts',
 			'field' => null,
 			'label' => null,
+			'text' => null,
 			'label-type' => null, // supported at the moment: datetime
 			'values-type' => null, // supported at the moment: price
 		], $options);
