@@ -5,3 +5,7 @@ a.card-body:link, a.card-body:visited {
 a.card-body:hover {
 	background: #f8fdff;
 }
+
+.highcharts-credits {
+	pointer-events: none !important;
+}
