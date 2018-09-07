@@ -69,6 +69,9 @@ class Dashboard extends Module
 
 	public function getListForCharting(array &$options): iterable
 	{
+		if (isset($options['fields']) and !is_string($options['fields']) and is_callable($options['fields']))
+			$options['fields'] = call_user_func($options['fields']);
+
 		if ($options['data']) {
 			return is_callable($options['data']) ? $options['data']() : $options['data'];
 		} else {
