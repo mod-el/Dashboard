@@ -26,7 +26,7 @@ class Button extends Card
 			$onclick = trim($options['onclick']);
 			if (substr($onclick, -1) !== ';')
 				$onclick .= ';';
-			$onclick .= ' return false"';
+			$onclick .= ' return false';
 		} elseif ($options['url']) {
 			$url = $options['url'];
 			$onclick = null;
