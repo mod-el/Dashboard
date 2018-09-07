@@ -8,4 +8,5 @@ a.card-body:hover {
 
 .highcharts-credits {
 	pointer-events: none !important;
+	touch-action: none !important;
 }
