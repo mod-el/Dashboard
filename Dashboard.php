@@ -5,14 +5,35 @@ use Model\Core\Module;
 
 class Dashboard extends Module
 {
+	public $cards = [];
+	public $layout = [];
+
 	public function init(array $options)
 	{
 		$config = $this->retrieveConfig();
+		$this->cards = $config['cards'];
+
+		if (!$this->model->_User_Admin->logged())
+			return;
+
+		$layoutFile = INCLUDE_PATH . 'app-data' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'Dashboard' . DIRECTORY_SEPARATOR . $this->model->_User_Admin->logged() . '.json';
+		if (file_exists($layoutFile)) {
+			$this->layout = json_decode(file_get_contents($layoutFile), true);
+		} else {
+			$this->layout = $config['default'];
+			file_put_contents($layoutFile, json_encode($this->layout));
+		}
+
 		$dependencies = [];
 
-		foreach ($config['cards'] as $row) {
+		foreach ($this->layout as $row) {
 			foreach ($row as $col) {
-				foreach ($col['cards'] as $card) {
+				foreach ($col['cards'] as $cardName) {
+					if (!isset($this->cards[$cardName]))
+						$this->model->error('No card named "' . $cardName . '"');
+
+					$card = $this->cards[$cardName];
+
 					if (in_array($card['type'], ['LineChart', 'PieChart'])) {
 						$chartingModule = $card['options']['chart-module'] ?? 'Highcharts';
 						if (!in_array($chartingModule, $dependencies))
@@ -26,10 +47,10 @@ class Dashboard extends Module
 			$this->model->load($module);
 	}
 
-	public function render(array $cards)
+	public function render()
 	{
 		$totalCards = 0;
-		foreach ($cards as $row) {
+		foreach ($this->layout as $row) {
 			?>
 			<div class="row">
 				<?php
@@ -39,7 +60,11 @@ class Dashboard extends Module
 					?>
 					<div class="<?= entities($col['class']) ?>">
 						<?php
-						foreach ($col['cards'] as $idx => $cardOptions) {
+						foreach ($col['cards'] as $idx => $cardName) {
+							if (!isset($this->cards[$cardName]))
+								$this->model->error('No card named "' . $cardName . '"');
+
+							$cardOptions = $this->cards[$cardName];
 							if (!isset($cardOptions['type'], $cardOptions['options']))
 								$this->model->error('Invalid dashboard configuration ("type" or "options" missing)');
 							?>

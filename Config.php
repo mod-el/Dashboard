@@ -19,5 +19,6 @@ $config = [
 ];
 ';
 		});
+		$this->addAsset('app-data');
 	}
 }

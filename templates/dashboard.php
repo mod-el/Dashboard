@@ -16,7 +16,7 @@ $config = $this->model->_Dashboard->retrieveConfig();
 	?>
 	<div class="py-2">
 		<?php
-		$this->model->_Dashboard->render($config['cards']);
+		$this->model->_Dashboard->render();
 		?>
 	</div>
 </div>
