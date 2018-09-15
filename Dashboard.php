@@ -13,7 +13,7 @@ class Dashboard extends Module
 		$config = $this->retrieveConfig();
 		$this->cards = $config['cards'];
 
-		if (!$this->model->_User_Admin->logged())
+		if (!$this->model->isLoaded('User', 'Admin') or !$this->model->_User_Admin->logged())
 			return;
 
 		$layoutFile = INCLUDE_PATH . 'app-data' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'Dashboard' . DIRECTORY_SEPARATOR . $this->model->_User_Admin->logged() . '.json';
