@@ -30,7 +30,7 @@ class Dashboard extends Module
 			foreach ($row as $col) {
 				foreach ($col['cards'] as $cardName) {
 					if (!isset($this->cards[$cardName]))
-						$this->model->error('No card named "' . $cardName . '"');
+						continue;
 
 					$card = $this->cards[$cardName];
 
@@ -62,7 +62,7 @@ class Dashboard extends Module
 						<?php
 						foreach ($col['cards'] as $idx => $cardName) {
 							if (!isset($this->cards[$cardName]))
-								$this->model->error('No card named "' . $cardName . '"');
+								continue;
 
 							$cardOptions = $this->cards[$cardName];
 							if (!isset($cardOptions['type'], $cardOptions['options']))
