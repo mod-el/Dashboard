@@ -11,6 +11,9 @@ class Dashboard extends Module
 	public function init(array $options)
 	{
 		$config = $this->retrieveConfig();
+		if (!isset($config['default']))
+			$config['default'] = [];
+
 		$this->cards = $config['cards'];
 
 		if (!$this->model->isLoaded('User', 'Admin') or !$this->model->_User_Admin->logged())
@@ -19,6 +22,10 @@ class Dashboard extends Module
 		$layoutFile = INCLUDE_PATH . 'app-data' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'Dashboard' . DIRECTORY_SEPARATOR . $this->model->_User_Admin->logged() . '.json';
 		if (file_exists($layoutFile)) {
 			$this->layout = json_decode(file_get_contents($layoutFile), true);
+			if ($this->layout === null) {
+				$this->layout = [];
+				unset($layoutFile);
+			}
 		} else {
 			$this->layout = $config['default'];
 			file_put_contents($layoutFile, json_encode($this->layout));
