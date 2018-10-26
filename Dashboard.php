@@ -14,7 +14,7 @@ class Dashboard extends Module
 		if (!isset($config['default']))
 			$config['default'] = [];
 
-		$this->cards = $config['cards'];
+		$this->cards = $config['cards'] ?? [];
 
 		if (!$this->model->isLoaded('User', 'Admin') or !$this->model->_User_Admin->logged())
 			return;
