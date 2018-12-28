@@ -3,7 +3,7 @@
 	"description": "Admin dashboard",
 	"version": "0.0.5",
 	"dependencies": {
-		"Core": ">=2.7.1",
+		"Core": ">=2.8.1",
 		"AdminFront": ">=0.1.5",
 		"Bootstrap": ">=0.0.1"
 	},
