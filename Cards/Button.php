@@ -46,7 +46,7 @@ class Button extends Card
 				$get = $options['get'];
 			}
 
-			$onclick = 'loadAdminPage(' . entities(json_encode($request)) . ', ' . entities(json_encode($get)) . '); return false';
+			$onclick = 'loadAdminPage(' . entities(json_encode(implode('/', $request))) . ', ' . entities(json_encode($get)) . '); return false';
 		}
 		?>
 		<a href="<?= $url ?>"<?= $onclick ? ' onclick="' . $onclick . '"' : '' ?><?= $options['blank'] ? ' target="_blank"' : '' ?> class="card-body text-center">

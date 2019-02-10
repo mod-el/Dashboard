@@ -95,7 +95,7 @@ abstract class Card
 		if ($options['rule'] ?? null) {
 			?>
 			<div class="text-center">
-				<a href="<?= $this->model->_AdminFront->getUrlPrefix() . $options['rule'] ?>" onclick="loadAdminPage(['<?= $options['rule'] ?>']); return false" class="card-link">Vai alla lista</a>
+				<a href="<?= $this->model->_AdminFront->getUrlPrefix() . $options['rule'] ?>" onclick="loadAdminPage('<?= $options['rule'] ?>'); return false" class="card-link">Vai alla lista</a>
 			</div>
 			<?php
 		}
