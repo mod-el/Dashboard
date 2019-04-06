@@ -57,10 +57,10 @@ class Table extends Card
 									if (!is_string($c) and is_callable($c)) {
 										$text = call_user_func($c, $element);
 									} else {
-										$text = isset($form[$c]) ? $form[$c]->getText() : '';
+										$text = isset($form[$c]) ? entities($form[$c]->getText()) : '';
 									}
 									?>
-									<td><?= entities($text) ?></td>
+									<td><?= $text ?></td>
 									<?php
 								}
 								?>
