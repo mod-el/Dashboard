@@ -41,7 +41,7 @@ class Dashboard extends Module
 
 					$card = $this->cards[$cardName];
 
-					if (in_array($card['type'], ['LineChart', 'PieChart'])) {
+					if (in_array($card['type'], ['LineChart', 'PieChart', 'AreaChart'])) {
 						$chartingModule = $card['options']['chart-module'] ?? 'Highcharts';
 						if (!in_array($chartingModule, $dependencies))
 							$dependencies[] = $chartingModule;
