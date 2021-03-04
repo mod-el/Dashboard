@@ -19,6 +19,9 @@ class Dashboard extends Module
 		if (!$this->model->isLoaded('User', 'Admin') or !$this->model->_User_Admin->logged())
 			return;
 
+		if (!is_dir(INCLUDE_PATH . 'app-data' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'Dashboard'))
+			mkdir(INCLUDE_PATH . 'app-data' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'Dashboard', 0777, true);
+
 		$layoutFile = INCLUDE_PATH . 'app-data' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'Dashboard' . DIRECTORY_SEPARATOR . $this->model->_User_Admin->logged() . '.json';
 		if (file_exists($layoutFile)) {
 			$this->layout = json_decode(file_get_contents($layoutFile), true);
@@ -41,7 +44,7 @@ class Dashboard extends Module
 
 					$card = $this->cards[$cardName];
 
-					if (in_array($card['type'], ['LineChart', 'PieChart', 'AreaChart'])) {
+					if (in_array($card['type'], ['LineChart', 'PieChart', 'AreaChart', 'StackedBarChart'])) {
 						$chartingModule = $card['options']['chart-module'] ?? 'Highcharts';
 						if (!in_array($chartingModule, $dependencies))
 							$dependencies[] = $chartingModule;
