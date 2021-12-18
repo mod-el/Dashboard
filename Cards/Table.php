@@ -30,6 +30,8 @@ class Table extends Card
 		]);
 
 		$this->renderTitle($options);
+
+		$columns = $this->model->_Admin->elaborateColumns($options['columns'], $options['table'] ?: null, false);
 		?>
 		<div class="card-body">
 			<div class="table-responsive">
@@ -37,11 +39,13 @@ class Table extends Card
 					<thead>
 						<tr>
 							<?php
-							foreach ($options['columns'] as $k => $c) {
-								$label = (is_numeric($k) and is_string($c)) ? $this->getLabel($c) : $k;
+							$totals = [];
+							foreach ($columns as $column) {
 								?>
-								<th scope="col"><?= entities($label) ?></th>
+								<th scope="col"><?= entities($column['label']) ?></th>
 								<?php
+								if ($column['total'] and $column['field'])
+									$totals[$column['field']] = 0;
 							}
 							?>
 						</tr>
@@ -49,18 +53,20 @@ class Table extends Card
 					<tbody>
 						<?php
 						foreach ($list as $element) {
-							$form = $element->getForm();
 							?>
-							<tr<?php if ($options['rule']) { ?> onclick="loadElement('<?= $options['rule'] ?>', '<?= $element['id'] ?>'); return false"<?php } ?>>
+							<tr<?php if ($options['rule']) { ?> onclick="loadAdminElement('<?= $element['id'] ?>', {}, '<?= $options['rule'] ?>'); return false"<?php } ?>>
 								<?php
-								foreach ($options['columns'] as $k => $c) {
-									if (!is_string($c) and is_callable($c)) {
-										$text = call_user_func($c, $element);
-									} else {
-										$text = isset($form[$c]) ? entities($form[$c]->getText()) : '';
-									}
+								foreach ($columns as $column) {
 									?>
-									<td><?= $text ?></td>
+									<td>
+										<?php
+										$elaborated = $this->model->_Admin->getElementColumn($element, $column);
+										if ($column['total'] and $column['field'])
+											$totals[$column['field']] += $elaborated['value'];
+
+										echo $column['raw'] ? $elaborated['text'] : entities($elaborated['text']);
+										?>
+									</td>
 									<?php
 								}
 								?>
@@ -69,6 +75,48 @@ class Table extends Card
 						}
 						?>
 					</tbody>
+					<?php
+					if (!empty($totals)) {
+						?>
+						<tfoot>
+							<tr>
+								<?php
+								$labelColumnShown = false;
+								$labelColumnWidth = 0;
+								foreach ($columns as $column) {
+									if ($column['total'] and $column['field']) {
+										if (!$labelColumnShown) {
+											if ($labelColumnWidth > 0) {
+												?>
+												<th scope="col" colspan="<?= $labelColumnWidth ?>" class="text-right">
+													Totali:
+												</th>
+												<?php
+											}
+
+											$labelColumnShown = true;
+										}
+
+										?>
+										<th scope="col">
+											<?php
+											if ($column['price'])
+												echo makePrice($totals[$column['field']]);
+											else
+												echo $totals[$column['field']];
+											?>
+										</th>
+										<?php
+									} else {
+										$labelColumnWidth++;
+									}
+								}
+								?>
+							</tr>
+						</tfoot>
+						<?php
+					}
+					?>
 				</table>
 			</div>
 			<?php
