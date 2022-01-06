@@ -4,7 +4,7 @@ use Model\Dashboard\Card;
 
 class Button extends Card
 {
-	public function render(array $options)
+	public function render(array $options, array $filters = [])
 	{
 		$options = array_merge([
 			'text' => null,

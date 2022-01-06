@@ -4,7 +4,7 @@ use Model\Dashboard\Card;
 
 class LineChart extends Card
 {
-	public function render(array $options)
+	public function render(array $options, array $filters = [])
 	{
 		$options = array_merge([
 			'title' => null,
@@ -26,7 +26,7 @@ class LineChart extends Card
 
 		$options = $this->getBasicOptions($options);
 
-		$list = $this->model->_Dashboard->getListForCharting($options);
+		$list = $this->model->_Dashboard->getListForCharting($options, $filters);
 
 		$this->renderTitle($options);
 

@@ -4,7 +4,7 @@ use Model\Dashboard\Card;
 
 class Total extends Card
 {
-	public function render(array $options)
+	public function render(array $options, array $filters = [])
 	{
 		$options = array_merge([
 			'text1' => null,
@@ -16,11 +16,10 @@ class Total extends Card
 		$options = $this->getBasicOptions($options);
 
 		if ($options['data']) {
-			if (!is_string($options['data']) and is_callable($options['data'])) {
+			if (!is_string($options['data']) and is_callable($options['data']))
 				$tot = call_user_func($options['data']);
-			} else {
+			else
 				$tot = $options['data'];
-			}
 		} else {
 			$tot = $this->model->_ORM->count($options['element'], $options['where'], [
 				'table' => $options['table'],

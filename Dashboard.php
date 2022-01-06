@@ -5,14 +5,12 @@ use Model\Core\Module;
 
 class Dashboard extends Module
 {
-	public $cards = [];
-	public $layout = [];
+	public array $cards = [];
+	public array $layout = [];
 
 	public function init(array $options)
 	{
 		$config = $this->retrieveConfig();
-		if (!isset($config['default']))
-			$config['default'] = [];
 
 		$this->cards = $config['cards'] ?? [];
 
@@ -27,15 +25,14 @@ class Dashboard extends Module
 			$this->layout = json_decode(file_get_contents($layoutFile), true);
 			if ($this->layout === null) {
 				$this->layout = [];
-				unset($layoutFile);
+				unlink($layoutFile);
 			}
 		} else {
-			$this->layout = $config['default'];
+			$this->layout = $config['default'] ?? [];
 			file_put_contents($layoutFile, json_encode($this->layout));
 		}
 
 		$dependencies = [];
-
 		foreach ($this->layout as $row) {
 			foreach ($row as $col) {
 				foreach ($col['cards'] as $cardName) {
@@ -57,9 +54,9 @@ class Dashboard extends Module
 			$this->model->load($module);
 	}
 
-	public function render()
+	public function render(array $filters = [])
 	{
-		$totalCards = 0;
+		$cardIdx = 0;
 		foreach ($this->layout as $row) {
 			?>
 			<div class="row">
@@ -84,10 +81,10 @@ class Dashboard extends Module
 								if (!$className)
 									$this->model->error('No card type named "' . $cardOptions['type'] . '"');
 
-								$card = new $className($this->model, $totalCards);
-								$card->render($cardOptions['options']);
+								$card = new $className($this->model, $cardIdx);
+								$card->render($cardOptions['options'], $filters);
 
-								$totalCards++;
+								$cardIdx++;
 								?>
 							</div>
 							<?php
@@ -102,13 +99,13 @@ class Dashboard extends Module
 		}
 	}
 
-	public function getListForCharting(array &$options): iterable
+	public function getListForCharting(array &$options, array $filters = []): iterable
 	{
 		if (isset($options['fields']) and !is_string($options['fields']) and is_callable($options['fields']))
 			$options['fields'] = call_user_func($options['fields']);
 
 		if ($options['data']) {
-			return is_callable($options['data']) ? $options['data']() : $options['data'];
+			return is_callable($options['data']) ? $options['data']($filters) : $options['data'];
 		} else {
 			if ($options['group_by']) {
 				if (!isset($options['label']))
@@ -116,6 +113,9 @@ class Dashboard extends Module
 				if (!$options['order_by'])
 					$options['order_by'] = $options['group_by'];
 			}
+
+			if ($filters and !empty($options['elaborate_filters']) and is_callable($options['elaborate_filters']))
+				$options['where'] = $options['elaborate_filters']($options['where'], $filters);
 
 			$qryOptions = [
 				'limit' => $options['limit'],

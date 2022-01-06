@@ -6,13 +6,12 @@ use Model\Core\Core;
 
 abstract class Card
 {
-	/** @var Core */
-	protected $model;
-	/** @var int */
-	protected $idx;
+	protected Core $model;
+	protected int $idx;
 
 	/**
 	 * Card constructor.
+	 *
 	 * @param Core $model
 	 * @param int $idx
 	 */
@@ -22,7 +21,7 @@ abstract class Card
 		$this->idx = $idx;
 	}
 
-	abstract public function render(array $options);
+	abstract public function render(array $options, array $filters = []);
 
 	protected function getBasicOptions(array $options): array
 	{
@@ -58,13 +57,11 @@ abstract class Card
 	{
 		$adminPage = $this->getAdminPage($page);
 
-		$options = array_merge([
+		return array_merge([
 			'table' => null,
 			'element' => null,
 			'where' => [],
 		], $adminPage->options());
-
-		return $options;
 	}
 
 	protected function useAdminPageOptions(array $options): array
@@ -109,6 +106,6 @@ abstract class Card
 	 */
 	protected function getLabel(string $k): string
 	{
-		return ucwords(str_replace(array('-', '_'), ' ', $k));
+		return ucwords(str_replace(['-', '_'], ' ', $k));
 	}
 }

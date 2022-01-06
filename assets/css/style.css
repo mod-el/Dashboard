@@ -1,0 +1,17 @@
+.model-dashboard a.card-body:link, .model-dashboard a.card-body:visited {
+	color: #333;
+}
+
+.model-dashboard a.card-body:hover {
+	background: #f8fdff;
+}
+
+.model-dashboard .highcharts-credits {
+	pointer-events: none !important;
+	touch-action: none !important;
+}
+
+.model-dashboard .table tbody tr:hover td {
+	background-color: #F9F9F9 !important;
+	cursor: pointer;
+}

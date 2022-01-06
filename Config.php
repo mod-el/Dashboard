@@ -16,6 +16,8 @@ class Config extends Module_Config
 $config = [
 	\'title\' => APP_NAME,
 	\'cards\' => [],
+	\'default\' => [],
+	\'filters\' => [],
 ];
 ';
 		});

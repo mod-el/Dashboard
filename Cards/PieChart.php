@@ -4,7 +4,7 @@ use Model\Dashboard\Card;
 
 class PieChart extends Card
 {
-	public function render(array $options)
+	public function render(array $options, array $filters = [])
 	{
 		$options = array_merge([
 			'title' => null,
@@ -27,7 +27,7 @@ class PieChart extends Card
 
 		$options = $this->getBasicOptions($options);
 
-		$list = $this->model->_Dashboard->getListForCharting($options);
+		$list = $this->model->_Dashboard->getListForCharting($options, $filters);
 
 		$this->renderTitle($options);
 
