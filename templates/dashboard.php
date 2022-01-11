@@ -27,31 +27,33 @@ if ($filtersFields) {
 		<?php
 	}
 	?>
-	<div class="py-2">
+	<div class="py-2 relative">
 		<?php
 		if ($filtersFields) {
 			?>
-			<div class="row">
-				<div class="col p-2">
-					<div class="card">
-						<form action="" method="post" onsubmit="applyDashboardFilters(); return false" class="flex-fields-wrap p-2" id="dashboard-filters-form">
-							<?php
-							foreach ($filtersFields as $filter_k => $filter) {
-								?>
-								<div>
-									<?= entities($filtersForm[$filter_k]->getLabel()) ?>
-									<br/>
-									<?php $filtersForm[$filter_k]->render(); ?>
-								</div>
-								<?php
-							}
+			<div class="model-dashboard-settings">
+				<a href="#" onclick="zkPopup('#filters-popup'); return false"><i class="fab fa-wpforms"></i></a>
+			</div>
+
+			<div class="d-none" id="filters-popup">
+				<div class="p-2">
+					<form action="" method="post" onsubmit="applyDashboardFilters(); return false" class="flex-fields-wrap p-2" id="dashboard-filters-form">
+						<?php
+						foreach ($filtersFields as $filter_k => $filter) {
 							?>
 							<div>
-								&nbsp;<br/>
-								<input type="submit" class="btn btn-primary" value="Applica"/>
+								<?= entities($filtersForm[$filter_k]->getLabel()) ?>
+								<br/>
+								<?php $filtersForm[$filter_k]->render(); ?>
 							</div>
-						</form>
-					</div>
+							<?php
+						}
+						?>
+						<div>
+							&nbsp;<br/>
+							<input type="submit" class="btn btn-primary" value="Applica"/>
+						</div>
+					</form>
 				</div>
 			</div>
 			<?php
