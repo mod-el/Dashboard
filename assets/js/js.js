@@ -1,8 +1,8 @@
 async function applyDashboardFilters() {
 	let form = _('dashboard-filters-form');
-	let filters = JSON.stringify(await form.getValues());
+	let filters = form ? JSON.stringify(await form.getValues()) : {};
 	zkPopupClose();
-	await loadAdminPage('', {filters}, {}, false);
+	await loadAdminPage('', filters ? {filters} : {}, {}, false);
 }
 
 function enableDashboardEdit() {
