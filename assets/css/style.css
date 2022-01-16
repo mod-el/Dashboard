@@ -2,20 +2,29 @@
 	position: absolute;
 	right: 0;
 	display: inline-block;
-	z-index: 10;
+	z-index: 110;
 	padding: 5px 10px;
 	border-radius: 10px;
 	border: solid #ccc 1px;
 	background: #fff;
 	opacity: 0.6;
-	transition: all 0.3s ease;
+	transition: all 0.5s ease;
 }
 
 .model-dashboard-settings:hover {
 	opacity: 1;
 }
 
-.model-dashboard-settings a:link, .model-dashboard a.card-body:link, .model-dashboard a.card-body:visited {
+.model-dashboard-settings a:link {
+	color: #555;
+	margin: 0 5px;
+}
+
+.model-dashboard-settings a:hover {
+	color: #000;
+}
+
+.model-dashboard a.card-body:link, .model-dashboard a.card-body:visited {
 	color: #333;
 }
 
@@ -31,4 +40,20 @@
 .model-dashboard .table tbody tr:hover td {
 	background-color: #F9F9F9 !important;
 	cursor: pointer;
+}
+
+.model-dashboard .fa-arrows-alt-v, .model-dashboard .fa-arrows-alt-h {
+	position: absolute;
+	top: 0;
+	z-index: 100;
+	font-size: 20px;
+	cursor: move;
+}
+
+.model-dashboard .fa-arrows-alt-v {
+	left: 0;
+}
+
+.model-dashboard .fa-arrows-alt-h {
+	right: 0;
 }

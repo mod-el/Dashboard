@@ -29,17 +29,31 @@ class Dashboard extends Module
 			}
 		} else {
 			$this->layout = $config['default'] ?? [];
+
+			foreach ($this->layout as &$row) {
+				foreach ($row as &$cell) {
+					foreach ($cell['cards'] as &$card) {
+						$card = [
+							'card' => $card,
+						];
+					}
+					unset($card);
+				}
+				unset($cell);
+			}
+			unset($row);
+
 			file_put_contents($layoutFile, json_encode($this->layout));
 		}
 
 		$dependencies = [];
 		foreach ($this->layout as $row) {
 			foreach ($row as $col) {
-				foreach ($col['cards'] as $cardName) {
-					if (!isset($this->cards[$cardName]))
+				foreach ($col['cards'] as $cardConfig) {
+					if (!isset($this->cards[$cardConfig['card']]))
 						continue;
 
-					$card = $this->cards[$cardName];
+					$card = $this->cards[$cardConfig['card']];
 
 					if (in_array($card['type'], ['LineChart', 'PieChart', 'AreaChart', 'StackedBarChart'])) {
 						$chartingModule = $card['options']['chart-module'] ?? 'Highcharts';
@@ -56,47 +70,58 @@ class Dashboard extends Module
 
 	public function render(array $filters = [])
 	{
-		$cardIdx = 0;
-		foreach ($this->layout as $row) {
-			?>
-			<div class="row">
-				<?php
-				foreach ($row as $col) {
-					if (!isset($col['class'], $col['cards']))
-						$this->model->error('Invalid dashboard configuration ("class" or "cards" missing)');
-					?>
-					<div class="<?= entities($col['class']) ?>">
+		?>
+		<div data-draggable-cont>
+			<?php
+			$cardIdx = 0;
+			foreach ($this->layout as $row) {
+				?>
+				<div class="relative">
+					<i class="fas fa-arrows-alt-v d-none" data-dashboard-edit="1" data-draggable-grip></i>
+
+					<div class="row" data-draggable-cont>
 						<?php
-						foreach ($col['cards'] as $idx => $cardName) {
-							if (!isset($this->cards[$cardName]))
-								continue;
-
-							$cardOptions = $this->cards[$cardName];
-							if (!isset($cardOptions['type'], $cardOptions['options']))
-								$this->model->error('Invalid dashboard configuration ("type" or "options" missing)');
+						foreach ($row as $col) {
+							if (!isset($col['class'], $col['cards']))
+								$this->model->error('Invalid dashboard configuration ("class" or "cards" missing)');
 							?>
-							<div class="card<?= $idx > 0 ? ' mt-3' : '' ?>">
+							<div class="<?= entities($col['class']) ?> relative">
+								<i class="fas fa-arrows-alt-h d-none" data-dashboard-edit="1" data-draggable-grip></i>
 								<?php
-								$className = Autoloader::searchFile('Card', $cardOptions['type']);
-								if (!$className)
-									$this->model->error('No card type named "' . $cardOptions['type'] . '"');
+								foreach ($col['cards'] as $idx => $cardConfig) {
+									if (!isset($this->cards[$cardConfig['card']]))
+										continue;
 
-								$card = new $className($this->model, $cardIdx);
-								$card->render($cardOptions['options'], $filters);
+									$cardOptions = $this->cards[$cardConfig['card']];
+									if (!isset($cardOptions['type'], $cardOptions['options']))
+										$this->model->error('Invalid dashboard configuration ("type" or "options" missing)');
+									?>
+									<div class="card<?= $idx > 0 ? ' mt-3' : '' ?>">
+										<?php
+										$className = Autoloader::searchFile('Card', $cardOptions['type']);
+										if (!$className)
+											$this->model->error('No card type named "' . $cardOptions['type'] . '"');
 
-								$cardIdx++;
+										$card = new $className($this->model, $cardIdx);
+										$card->render($cardOptions['options'], $filters);
+
+										$cardIdx++;
+										?>
+									</div>
+									<?php
+								}
 								?>
 							</div>
 							<?php
 						}
 						?>
 					</div>
-					<?php
-				}
-				?>
-			</div>
-			<?php
-		}
+				</div>
+				<?php
+			}
+			?>
+		</div>
+		<?php
 	}
 
 	public function getListForCharting(array &$options, array $filters = []): iterable
