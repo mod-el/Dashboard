@@ -143,6 +143,7 @@ class Dashboard extends Module
 				$options['where'] = $options['elaborate_filters']($options['where'], $filters);
 
 			$qryOptions = [
+				'joins' => $options['joins'],
 				'limit' => $options['limit'],
 				'order_by' => $options['order_by'],
 				'group_by' => $options['group_by'],
@@ -150,6 +151,7 @@ class Dashboard extends Module
 				'sum' => $options['sum'],
 				'max' => $options['max'],
 			];
+
 			if ($options['element'] and $options['element'] !== 'Element')
 				return $this->model->_ORM->all($options['element'], $options['where'], $qryOptions);
 			else
