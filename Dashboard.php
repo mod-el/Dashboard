@@ -12,15 +12,12 @@ class Dashboard extends Module
 	{
 		$config = $this->retrieveConfig();
 
-		$this->cards = $config['cards'] ?? [];
-
-		if (!$this->model->isLoaded('User', 'Admin') or !$this->model->_User_Admin->logged())
+		$layoutFile = $this->getLayoutFilePath();
+		if ($layoutFile === null)
 			return;
 
-		if (!is_dir(INCLUDE_PATH . 'app-data' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'Dashboard'))
-			mkdir(INCLUDE_PATH . 'app-data' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'Dashboard', 0777, true);
+		$this->cards = $config['cards'] ?? [];
 
-		$layoutFile = INCLUDE_PATH . 'app-data' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'Dashboard' . DIRECTORY_SEPARATOR . $this->model->_User_Admin->logged() . '.json';
 		if (file_exists($layoutFile)) {
 			$this->layout = json_decode(file_get_contents($layoutFile), true);
 			if ($this->layout === null) {
@@ -29,20 +26,6 @@ class Dashboard extends Module
 			}
 		} else {
 			$this->layout = $config['default'] ?? [];
-
-			foreach ($this->layout as &$row) {
-				foreach ($row as &$cell) {
-					foreach ($cell['cards'] as &$card) {
-						$card = [
-							'card' => $card,
-						];
-					}
-					unset($card);
-				}
-				unset($cell);
-			}
-			unset($row);
-
 			file_put_contents($layoutFile, json_encode($this->layout));
 		}
 
@@ -68,24 +51,45 @@ class Dashboard extends Module
 			$this->model->load($module);
 	}
 
+	private function getLayoutFilePath(): ?string
+	{
+		if (!$this->model->isLoaded('User', 'Admin') or !$this->model->_User_Admin->logged())
+			return null;
+
+		if (!is_dir(INCLUDE_PATH . 'app-data' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'Dashboard'))
+			mkdir(INCLUDE_PATH . 'app-data' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'Dashboard', 0777, true);
+
+		return INCLUDE_PATH . 'app-data' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'Dashboard' . DIRECTORY_SEPARATOR . $this->model->_User_Admin->logged() . '.json';
+	}
+
+	public function saveNewLayout(array $layout)
+	{
+		$layoutFile = $this->getLayoutFilePath();
+		if ($layoutFile === null)
+			return;
+
+		file_put_contents($layoutFile, json_encode($layout));
+		$this->layout = $layout;
+	}
+
 	public function render(array $filters = [])
 	{
 		?>
-		<div data-draggable-cont>
+		<div data-draggable-cont data-draggable-callback="dashboardRowDragged()">
 			<?php
 			$cardIdx = 0;
-			foreach ($this->layout as $row) {
+			foreach ($this->layout as $rowIdx => $row) {
 				?>
-				<div class="relative">
+				<div class="relative" data-dashboard-row="<?= $rowIdx ?>">
 					<i class="fas fa-arrows-alt-v d-none" data-dashboard-edit="1" data-draggable-grip></i>
 
-					<div class="row" data-draggable-cont>
+					<div class="row" data-draggable-cont data-draggable-callback="dashboardColumnDragged(this)">
 						<?php
-						foreach ($row as $col) {
+						foreach ($row as $colIdx => $col) {
 							if (!isset($col['class'], $col['cards']))
 								$this->model->error('Invalid dashboard configuration ("class" or "cards" missing)');
 							?>
-							<div class="<?= entities($col['class']) ?> relative">
+							<div class="<?= entities($col['class']) ?> relative" data-dashboard-column="<?= $colIdx ?>">
 								<i class="fas fa-arrows-alt-h d-none" data-dashboard-edit="1" data-draggable-grip></i>
 								<?php
 								foreach ($col['cards'] as $idx => $cardConfig) {

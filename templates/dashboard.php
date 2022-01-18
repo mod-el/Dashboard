@@ -19,6 +19,8 @@ if ($filtersFields) {
 		$filters = $filtersForm->getValues();
 }
 ?>
+<input type="hidden" id="original-dashboard-layout" value="<?= entities(json_encode($this->model->_Dashboard->layout)) ?>"/>
+
 <div class="p-3 container-fluid model-dashboard">
 	<?php
 	if ($config['title']) {
