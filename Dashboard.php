@@ -100,7 +100,8 @@ class Dashboard extends Module
 									if (!isset($cardOptions['type'], $cardOptions['options']))
 										$this->model->error('Invalid dashboard configuration ("type" or "options" missing)');
 									?>
-									<div class="card<?= $idx > 0 ? ' mt-3' : '' ?>">
+									<div class="card relative<?= $idx > 0 ? ' mt-3' : '' ?>" data-dashboard-card="<?= $idx ?>">
+										<i class="fas fa-trash d-none" data-dashboard-edit="1" onclick="dashboardDeleteCard(this.parentNode)"></i>
 										<?php
 										$className = Autoloader::searchFile('Card', $cardOptions['type']);
 										if (!$className)

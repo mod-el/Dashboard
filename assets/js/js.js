@@ -66,3 +66,21 @@ function dashboardColumnDragged(col) {
 		dashboardLayout[rowIdx].push(oldDashboardLayout[rowIdx][idx]);
 	}
 }
+
+function dashboardDeleteCard(card) {
+	if (!confirm('Sicuro di voler eliminare?'))
+		return;
+
+	let cardIdx = parseInt(card.getAttribute('data-dashboard-card'));
+	let col = card.parentNode;
+	let colIdx = parseInt(col.getAttribute('data-dashboard-column'));
+	let row = col.parentNode.parentNode;
+	let rowIdx = parseInt(row.getAttribute('data-dashboard-row'));
+
+	dashboardLayout[rowIdx][colIdx].cards.splice(cardIdx);
+	card.remove();
+
+	let newCardIdx = 0;
+	for (let _card of col.querySelectorAll('[data-dashboard-card]'))
+		_card.setAttribute('data-dashboard-card', (newCardIdx++).toString());
+}

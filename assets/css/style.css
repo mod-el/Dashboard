@@ -42,18 +42,25 @@
 	cursor: pointer;
 }
 
-.model-dashboard .fa-arrows-alt-v, .model-dashboard .fa-arrows-alt-h {
+.model-dashboard .fa-arrows-alt-v, .model-dashboard .fa-arrows-alt-h, .model-dashboard .fa-trash {
 	position: absolute;
-	top: 0;
 	z-index: 100;
 	font-size: 20px;
 	cursor: move;
 }
 
 .model-dashboard .fa-arrows-alt-v {
+	top: 0;
 	left: 0;
 }
 
 .model-dashboard .fa-arrows-alt-h {
-	right: 0;
+	bottom: 10px;
+	left: 0;
+}
+
+.model-dashboard .fa-trash {
+	top: -7px;
+	right: -6px;
+	cursor: pointer;
 }
