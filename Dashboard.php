@@ -116,6 +116,15 @@ class Dashboard extends Module
 									<?php
 								}
 								?>
+
+								<div class="dashboard-edit-links row no-gutters pt-2 pb-4 d-none" data-dashboard-edit="1">
+									<div class="col-6 pr-2">
+										<a href="#" onclick="return false">Aggiungi scheda</a>
+									</div>
+									<div class="col-6 pl-2">
+										<a href="#"  onclick="dashboardDeleteColumn(this.parentNode.parentNode.parentNode); return false" class="dashboard-delete-link">Elimina colonna</a>
+									</div>
+								</div>
 							</div>
 							<?php
 						}

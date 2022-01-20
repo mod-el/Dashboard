@@ -77,10 +77,26 @@ function dashboardDeleteCard(card) {
 	let row = col.parentNode.parentNode;
 	let rowIdx = parseInt(row.getAttribute('data-dashboard-row'));
 
-	dashboardLayout[rowIdx][colIdx].cards.splice(cardIdx);
+	dashboardLayout[rowIdx][colIdx].cards.splice(cardIdx, 1);
 	card.remove();
 
 	let newCardIdx = 0;
 	for (let _card of col.querySelectorAll('[data-dashboard-card]'))
 		_card.setAttribute('data-dashboard-card', (newCardIdx++).toString());
+}
+
+function dashboardDeleteColumn(col) {
+	if (!confirm('Sicuro di voler eliminare?'))
+		return;
+
+	let colIdx = parseInt(col.getAttribute('data-dashboard-column'));
+	let row = col.parentNode.parentNode;
+	let rowIdx = parseInt(row.getAttribute('data-dashboard-row'));
+
+	dashboardLayout[rowIdx].splice(colIdx, 1);
+	col.remove();
+
+	let newColIdx = 0;
+	for (let _col of row.querySelectorAll('[data-dashboard-column]'))
+		_col.setAttribute('data-dashboard-col', (newColIdx++).toString());
 }

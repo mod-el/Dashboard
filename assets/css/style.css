@@ -51,16 +51,41 @@
 
 .model-dashboard .fa-arrows-alt-v {
 	top: 0;
-	left: 0;
+	left: 10px;
 }
 
 .model-dashboard .fa-arrows-alt-h {
-	bottom: 10px;
-	left: 0;
+	top: 20px;
+	left: -3px;
 }
 
 .model-dashboard .fa-trash {
 	top: -7px;
 	right: -6px;
 	cursor: pointer;
+}
+
+.dashboard-edit-links a:link, .dashboard-edit-links a:visited {
+	display: block;
+	padding: 10px 0;
+	text-align: center;
+	color: #71af71;
+	border: solid #71af71 1px;
+	transition: all 0.3s ease;
+	border-radius: 3px;
+}
+
+.dashboard-edit-links a:hover{
+	background: #71af71;
+	color: #fff;
+}
+
+.dashboard-edit-links a.dashboard-delete-link:link, .dashboard-edit-links a.dashboard-delete-link:visited {
+	color: #A50000;
+	border: solid #A50000 1px;
+}
+
+.dashboard-edit-links a.dashboard-delete-link:hover{
+	background: #A50000;
+	color: #fff;
 }
