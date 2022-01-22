@@ -81,7 +81,9 @@ class Dashboard extends Module
 			foreach ($this->layout as $rowIdx => $row) {
 				?>
 				<div class="relative" data-dashboard-row="<?= $rowIdx ?>">
-					<i class="fas fa-arrows-alt-v d-none" data-dashboard-edit="1" data-draggable-grip></i>
+					<i class="fas fa-arrows-alt-v d-none" data-dashboard-edit="1" data-draggable-grip title="Sposta riga"></i>
+					<i class="fas fa-plus-circle d-none" data-dashboard-edit="1" title="Aggiungi colonna"></i>
+					<i class="fas fa-minus-circle d-none" data-dashboard-edit="1" title="Elimina riga" onclick="dashboardDeleteRow(this.parentNode); return false"></i>
 
 					<div class="row" data-draggable-cont data-draggable-callback="dashboardColumnDragged(this)">
 						<?php
@@ -90,7 +92,7 @@ class Dashboard extends Module
 								$this->model->error('Invalid dashboard configuration ("class" or "cards" missing)');
 							?>
 							<div class="<?= entities($col['class']) ?> relative" data-dashboard-column="<?= $colIdx ?>">
-								<i class="fas fa-arrows-alt-h d-none" data-dashboard-edit="1" data-draggable-grip></i>
+								<i class="fas fa-arrows-alt-h d-none" data-dashboard-edit="1" data-draggable-grip title="Sposta colonna"></i>
 								<?php
 								foreach ($col['cards'] as $idx => $cardConfig) {
 									if (!isset($this->cards[$cardConfig['card']]))
@@ -101,7 +103,7 @@ class Dashboard extends Module
 										$this->model->error('Invalid dashboard configuration ("type" or "options" missing)');
 									?>
 									<div class="card relative<?= $idx > 0 ? ' mt-3' : '' ?>" data-dashboard-card="<?= $idx ?>">
-										<i class="fas fa-trash d-none" data-dashboard-edit="1" onclick="dashboardDeleteCard(this.parentNode)"></i>
+										<i class="fas fa-trash d-none" data-dashboard-edit="1" onclick="dashboardDeleteCard(this.parentNode)" title="Elimina scheda"></i>
 										<?php
 										$className = Autoloader::searchFile('Card', $cardOptions['type']);
 										if (!$className)
@@ -122,7 +124,7 @@ class Dashboard extends Module
 										<a href="#" onclick="return false">Aggiungi scheda</a>
 									</div>
 									<div class="col-6 pl-2">
-										<a href="#"  onclick="dashboardDeleteColumn(this.parentNode.parentNode.parentNode); return false" class="dashboard-delete-link">Elimina colonna</a>
+										<a href="#" onclick="dashboardDeleteColumn(this.parentNode.parentNode.parentNode); return false" class="dashboard-delete-link">Elimina colonna</a>
 									</div>
 								</div>
 							</div>

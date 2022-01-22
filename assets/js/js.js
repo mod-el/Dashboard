@@ -98,5 +98,19 @@ function dashboardDeleteColumn(col) {
 
 	let newColIdx = 0;
 	for (let _col of row.querySelectorAll('[data-dashboard-column]'))
-		_col.setAttribute('data-dashboard-col', (newColIdx++).toString());
+		_col.setAttribute('data-dashboard-column', (newColIdx++).toString());
+}
+
+function dashboardDeleteRow(row) {
+	if (!confirm('Sicuro di voler eliminare?'))
+		return;
+
+	let rowIdx = parseInt(row.getAttribute('data-dashboard-row'));
+
+	dashboardLayout.splice(rowIdx, 1);
+	row.remove();
+
+	let newRowIdx = 0;
+	for (let _row of document.querySelectorAll('[data-dashboard-row]'))
+		_row.setAttribute('data-dashboard-row', (newRowIdx++).toString());
 }

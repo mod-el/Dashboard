@@ -69,7 +69,9 @@ if ($filtersFields) {
 			</div>
 			<?php
 		}
-
+		?>
+		<div style="height: 30px" class="d-none" data-dashboard-edit="1"></div>
+		<?php
 		$this->model->_Dashboard->render($filters);
 		?>
 	</div>

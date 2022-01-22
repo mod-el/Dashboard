@@ -1,5 +1,6 @@
 .model-dashboard-settings {
 	position: absolute;
+	top: -5px;
 	right: 0;
 	display: inline-block;
 	z-index: 110;
@@ -42,7 +43,11 @@
 	cursor: pointer;
 }
 
-.model-dashboard .fa-arrows-alt-v, .model-dashboard .fa-arrows-alt-h, .model-dashboard .fa-trash {
+.model-dashboard .fa-arrows-alt-v,
+.model-dashboard .fa-arrows-alt-h,
+.model-dashboard .fa-trash,
+.model-dashboard .fa-plus-circle,
+.model-dashboard .fa-minus-circle {
 	position: absolute;
 	z-index: 100;
 	font-size: 20px;
@@ -65,6 +70,18 @@
 	cursor: pointer;
 }
 
+.model-dashboard .fa-plus-circle {
+	bottom: 115px;
+	right: -15px;
+	cursor: pointer;
+}
+
+.model-dashboard .fa-minus-circle {
+	bottom: 90px;
+	right: -15px;
+	cursor: pointer;
+}
+
 .dashboard-edit-links a:link, .dashboard-edit-links a:visited {
 	display: block;
 	padding: 10px 0;
@@ -75,7 +92,7 @@
 	border-radius: 3px;
 }
 
-.dashboard-edit-links a:hover{
+.dashboard-edit-links a:hover {
 	background: #71af71;
 	color: #fff;
 }
@@ -85,7 +102,7 @@
 	border: solid #A50000 1px;
 }
 
-.dashboard-edit-links a.dashboard-delete-link:hover{
+.dashboard-edit-links a.dashboard-delete-link:hover {
 	background: #A50000;
 	color: #fff;
 }
