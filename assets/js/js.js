@@ -10,6 +10,9 @@ async function applyDashboardFilters() {
 function enableDashboardEdit() {
 	dashboardLayout = JSON.parse(_('original-dashboard-layout').value);
 
+	for (let row of document.querySelectorAll('[data-dashboard-row]'))
+		row.style.minHeight = '100px';
+
 	for (let el of document.querySelectorAll('[data-dashboard-edit]')) {
 		if (parseInt(el.getAttribute('data-dashboard-edit')) === 1)
 			el.removeClass('d-none');
