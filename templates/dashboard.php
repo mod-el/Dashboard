@@ -30,20 +30,29 @@ if ($filtersFields) {
 	}
 	?>
 	<div class="py-2 relative">
-		<div class="model-dashboard-settings">
-			<a href="#" onclick="enableDashboardEdit(); return false" data-dashboard-edit="0"><i class="fas fa-cog"></i></a>
-			<a href="#" onclick="revertDashboardEdit(); return false" data-dashboard-edit="1" class="d-none"><i class="fas fa-undo"></i></a>
-			<a href="#" onclick="confirmDashboardEdit(); return false" data-dashboard-edit="1" class="d-none"><i class="fas fa-check-circle"></i></a>
-			<?php
-			if ($filtersFields) {
-				?>
-				<a href="#" onclick="zkPopup('#filters-popup'); return false"><i class="fab fa-wpforms"></i></a>
-				<?php
-			}
-			?>
-		</div>
-
 		<?php
+		if (($config['configurable'] ?? true) or $filtersFields) {
+			?>
+			<div class="model-dashboard-settings">
+				<?php
+				if ($config['configurable'] ?? true) {
+					?>
+					<a href="#" onclick="enableDashboardEdit(); return false" data-dashboard-edit="0"><i class="fas fa-cog"></i></a>
+					<a href="#" onclick="revertDashboardEdit(); return false" data-dashboard-edit="1" class="d-none"><i class="fas fa-undo"></i></a>
+					<a href="#" onclick="confirmDashboardEdit(); return false" data-dashboard-edit="1" class="d-none"><i class="fas fa-check-circle"></i></a>
+					<?php
+				}
+
+				if ($filtersFields) {
+					?>
+					<a href="#" onclick="zkPopup('#filters-popup'); return false"><i class="fab fa-wpforms"></i></a>
+					<?php
+				}
+				?>
+			</div>
+			<?php
+		}
+
 		if ($filtersFields) {
 			?>
 			<div class="d-none" id="filters-popup">

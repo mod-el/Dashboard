@@ -18,7 +18,7 @@ class Dashboard extends Module
 
 		$this->cards = $config['cards'] ?? [];
 
-		if (file_exists($layoutFile)) {
+		if (($config['configurable'] ?? true) and file_exists($layoutFile)) {
 			$this->layout = json_decode(file_get_contents($layoutFile), true);
 			if ($this->layout === null) {
 				$this->layout = [];

@@ -15,6 +15,7 @@ class Config extends Module_Config
 			return '<?php
 $config = [
 	\'title\' => APP_NAME,
+	\'configurable\' => true,
 	\'cards\' => [],
 	\'default\' => [],
 	\'filters\' => [],
