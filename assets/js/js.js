@@ -117,3 +117,46 @@ function dashboardDeleteRow(row) {
 	for (let _row of document.querySelectorAll('[data-dashboard-row]'))
 		_row.setAttribute('data-dashboard-row', (newRowIdx++).toString());
 }
+
+function dashboardAddRow() {
+	let cont = _('dashboard-rows-cont');
+
+	let newRow = document.createElement('div');
+	newRow.className = 'relative';
+	newRow.setAttribute('data-dashboard-row', dashboardLayout.length);
+	newRow.style.minHeight = '100px';
+	newRow.innerHTML = `<i class="fas fa-arrows-alt-v" data-dashboard-edit="1" data-draggable-grip title="Sposta riga"></i>
+		<i class="fas fa-plus-circle" data-dashboard-edit="1" title="Aggiungi colonna"></i>
+		<i class="fas fa-minus-circle" data-dashboard-edit="1" title="Elimina riga" onclick="dashboardDeleteRow(this.parentNode); return false"></i>
+		<div class="row" data-draggable-cont data-draggable-callback="dashboardColumnDragged(this)"></div>`;
+
+	cont.insertBefore(newRow, cont.lastElementChild);
+
+	checkDraggables();
+
+	dashboardLayout.push([]);
+}
+
+function dashboardAddColumn(row) {
+	let rowIdx = parseInt(row.getAttribute('data-dashboard-row'));
+	let colIdx = dashboardLayout[rowIdx].length;
+
+	dashboardLayout[rowIdx].push({class: 'col p-2', cards: []});
+
+	let newColumn = document.createElement('div');
+	newColumn.className = 'col p-2 relative';
+	newColumn.setAttribute('data-dashboard-column', colIdx);
+	newColumn.innerHTML = `<i class="fas fa-arrows-alt-h" data-dashboard-edit="1" data-draggable-grip title="Sposta colonna"></i>
+		<div class="dashboard-edit-links row no-gutters pt-2 pb-4" data-dashboard-edit="1">
+			<div class="col-6 pr-2">
+				<a href="#" onclick="return false">Aggiungi scheda</a>
+			</div>
+			<div class="col-6 pl-2">
+				<a href="#" onclick="dashboardDeleteColumn(this.parentNode.parentNode.parentNode); return false" class="dashboard-delete-link">Elimina colonna</a>
+			</div>
+		</div>`;
+
+	row.querySelector('.row').appendChild(newColumn);
+
+	checkDraggables();
+}

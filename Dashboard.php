@@ -75,14 +75,14 @@ class Dashboard extends Module
 	public function render(array $filters = [])
 	{
 		?>
-		<div data-draggable-cont data-draggable-callback="dashboardRowDragged()">
+		<div data-draggable-cont data-draggable-callback="dashboardRowDragged()" id="dashboard-rows-cont">
 			<?php
 			$cardIdx = 0;
 			foreach ($this->layout as $rowIdx => $row) {
 				?>
 				<div class="relative" data-dashboard-row="<?= $rowIdx ?>">
 					<i class="fas fa-arrows-alt-v d-none" data-dashboard-edit="1" data-draggable-grip title="Sposta riga"></i>
-					<i class="fas fa-plus-circle d-none" data-dashboard-edit="1" title="Aggiungi colonna"></i>
+					<i class="fas fa-plus-circle d-none" data-dashboard-edit="1" title="Aggiungi colonna" onclick="dashboardAddColumn(this.parentNode); return false"></i>
 					<i class="fas fa-minus-circle d-none" data-dashboard-edit="1" title="Elimina riga" onclick="dashboardDeleteRow(this.parentNode); return false"></i>
 
 					<div class="row" data-draggable-cont data-draggable-callback="dashboardColumnDragged(this)">
@@ -91,7 +91,7 @@ class Dashboard extends Module
 							if (!isset($col['class'], $col['cards']))
 								$this->model->error('Invalid dashboard configuration ("class" or "cards" missing)');
 							?>
-							<div class="<?= entities($col['class']) ?> relative" data-dashboard-column="<?= $colIdx ?>">
+							<div class="<?= entities($col['class']) ?> p-2 relative" data-dashboard-column="<?= $colIdx ?>">
 								<i class="fas fa-arrows-alt-h d-none" data-dashboard-edit="1" data-draggable-grip title="Sposta colonna"></i>
 								<?php
 								foreach ($col['cards'] as $idx => $cardConfig) {
@@ -136,6 +136,9 @@ class Dashboard extends Module
 				<?php
 			}
 			?>
+			<div class="dashboard-edit-links pt-2 pb-4 d-none" data-dashboard-edit="1">
+				<a href="#" onclick="dashboardAddRow(); return false">Aggiungi riga</a>
+			</div>
 		</div>
 		<?php
 	}
