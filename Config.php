@@ -24,4 +24,9 @@ $config = [
 		});
 		$this->addAsset('app-data');
 	}
+
+	public function getConfigData(): ?array
+	{
+		return [];
+	}
 }
