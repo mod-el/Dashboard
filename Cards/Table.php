@@ -20,16 +20,20 @@ class Table extends Card
 
 		$options = $this->getBasicOptions($options);
 
-		$list = $this->model->_ORM->all($options['element'], $options['where'], [
-			'table' => $options['table'],
-			'joins' => $options['joins'],
-			'limit' => $options['limit'],
-			'order_by' => $options['order_by'],
-			'group_by' => $options['group_by'],
-			'having' => $options['having'],
-			'sum' => $options['sum'],
-			'max' => $options['max'],
-		]);
+		if (isset($options['rows'])) { // Custom rows
+			$list = is_callable($options['rows']) ? $options['rows']() : $options['rows'];
+		} else {
+			$list = $this->model->_ORM->all($options['element'], $options['where'], [
+				'table' => $options['table'],
+				'joins' => $options['joins'],
+				'limit' => $options['limit'],
+				'order_by' => $options['order_by'],
+				'group_by' => $options['group_by'],
+				'having' => $options['having'],
+				'sum' => $options['sum'],
+				'max' => $options['max'],
+			]);
+		}
 
 		$this->renderTitle($options);
 
@@ -55,25 +59,39 @@ class Table extends Card
 					<tbody>
 						<?php
 						foreach ($list as $element) {
-							?>
-							<tr<?php if ($options['rule']) { ?> onclick="loadAdminElement('<?= $element['id'] ?>', {}, '<?= $options['rule'] ?>'); return false"<?php } ?>>
-								<?php
-								foreach ($columns as $column) {
-									?>
-									<td>
-										<?php
-										$elaborated = $this->model->_Admin->getElementColumn($element, $column);
-										if ($column['total'] and $column['field'])
-											$totals[$column['field']] += $elaborated['value'];
-
-										echo $column['raw'] ? $elaborated['text'] : entities($elaborated['text']);
-										?>
-									</td>
-									<?php
-								}
+							if (isset($options['rows'])) { // Custom rows
 								?>
-							</tr>
-							<?php
+								<tr<?php if (!empty($element['onclick'])) { ?> onclick="<?= $element['onclick'] ?>"<?php } ?>>
+									<?php
+									foreach ($columns as $column) {
+										?>
+										<td><?= $column['raw'] ? $element['columns'][$column['field']] : entities($element['columns'][$column['field']]) ?></td>
+										<?php
+									}
+									?>
+								</tr>
+								<?php
+							} else {
+								?>
+								<tr<?php if ($options['rule']) { ?> onclick="loadAdminElement('<?= $element['id'] ?>', {}, '<?= $options['rule'] ?>'); return false"<?php } ?>>
+									<?php
+									foreach ($columns as $column) {
+										?>
+										<td>
+											<?php
+											$elaborated = $this->model->_Admin->getElementColumn($element, $column);
+											if ($column['total'] and $column['field'])
+												$totals[$column['field']] += $elaborated['value'];
+
+											echo $column['raw'] ? $elaborated['text'] : entities($elaborated['text']);
+											?>
+										</td>
+										<?php
+									}
+									?>
+								</tr>
+								<?php
+							}
 						}
 						?>
 					</tbody>
