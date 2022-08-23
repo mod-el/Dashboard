@@ -8,6 +8,7 @@ class Table extends Card
 	{
 		$options = array_merge([
 			'where' => [],
+			'joins' => [],
 			'columns' => [],
 			'limit' => 5,
 			'order_by' => 'id DESC',
@@ -21,6 +22,7 @@ class Table extends Card
 
 		$list = $this->model->_ORM->all($options['element'], $options['where'], [
 			'table' => $options['table'],
+			'joins' => $options['joins'],
 			'limit' => $options['limit'],
 			'order_by' => $options['order_by'],
 			'group_by' => $options['group_by'],
