@@ -4,8 +4,7 @@
 	"version": "0.2.0",
 	"dependencies": {
 		"Core": ">=2.8.1",
-		"AdminFront": ">=1.0.0",
-		"Bootstrap": ">=1.0.0"
+		"AdminFront": ">=1.0.0"
 	},
 	"file-types": {
 		"Card": {
