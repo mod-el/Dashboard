@@ -2,6 +2,7 @@
 
 use Model\Core\Autoloader;
 use Model\Core\Module;
+use Model\Db\Db;
 
 class Dashboard extends Module
 {
@@ -174,7 +175,7 @@ class Dashboard extends Module
 			if ($options['element'] and $options['element'] !== 'Element')
 				return $this->model->_ORM->all($options['element'], $options['where'], $qryOptions);
 			else
-				return $this->model->_Db->select_all($options['table'], $options['where'], $qryOptions);
+				return Db::getConnection()->selectAll($options['table'], $options['where'], $qryOptions);
 		}
 	}
 }
