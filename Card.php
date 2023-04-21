@@ -26,6 +26,7 @@ abstract class Card
 	protected function getBasicOptions(array $options): array
 	{
 		$options = array_merge([
+			'cache' => false,
 			'admin-page' => null,
 			'rule' => null,
 			'table' => null,

@@ -1,5 +1,6 @@
 <?php namespace Model\Dashboard;
 
+use Model\Cache\Cache;
 use Model\Core\Autoloader;
 use Model\Core\Module;
 use Model\Db\Db;
@@ -150,19 +151,38 @@ class Dashboard extends Module
 		if (isset($options['fields']) and !is_string($options['fields']) and is_callable($options['fields']))
 			$options['fields'] = call_user_func($options['fields']);
 
+		if ($options['group_by']) {
+			if (!isset($options['label']))
+				$options['label'] = $options['group_by'];
+			if (!$options['order_by'])
+				$options['order_by'] = $options['group_by'];
+		}
+
+		if ($filters and !empty($options['elaborate_filters']) and is_callable($options['elaborate_filters']))
+			$options['where'] = $options['elaborate_filters']($options['where'], $filters);
+
+		if ($options['cache']) {
+			$cache = Cache::getCacheAdapter();
+			return $cache->get('card_cache-' . sha1(json_encode($options) . '-' . json_encode($filters)) . '-' . ((int)$this->model->logged()), function (\Symfony\Contracts\Cache\ItemInterface $item) use ($options, $filters) {
+				if (!empty($options['cache']['expire_after']))
+					$item->expiresAfter($options['cache']['expire_after']);
+				elseif (!empty($options['cache']['expire_at']))
+					$item->expiresAt($options['cache']['expire_at']);
+				if (!empty($options['cache']['tag']))
+					$item->tag($options['cache']['tag']);
+
+				return [...$this->doGetListForCharting($options, $filters)];
+			});
+		} else {
+			return $this->doGetListForCharting($options, $filters);
+		}
+	}
+
+	private function doGetListForCharting(array $options, array $filters = []): iterable
+	{
 		if ($options['data']) {
 			return is_callable($options['data']) ? $options['data']($filters) : $options['data'];
 		} else {
-			if ($options['group_by']) {
-				if (!isset($options['label']))
-					$options['label'] = $options['group_by'];
-				if (!$options['order_by'])
-					$options['order_by'] = $options['group_by'];
-			}
-
-			if ($filters and !empty($options['elaborate_filters']) and is_callable($options['elaborate_filters']))
-				$options['where'] = $options['elaborate_filters']($options['where'], $filters);
-
 			$qryOptions = [
 				'joins' => $options['joins'],
 				'limit' => $options['limit'],
