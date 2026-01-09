@@ -4,7 +4,7 @@ use Model\Dashboard\Card;
 
 class Table extends Card
 {
-	public function render(array $options, array $filters = [])
+	public function render(array $options, array $filters = []): void
 	{
 		$options = array_merge([
 			'where' => [],
@@ -21,9 +21,10 @@ class Table extends Card
 		$options = $this->getBasicOptions($options);
 
 		if (isset($options['rows'])) { // Custom rows
-			$list = is_callable($options['rows']) ? $options['rows']() : $options['rows'];
+			$list = is_callable($options['rows']) ? $options['rows']($filters) : $options['rows'];
 		} else {
-			$list = $this->model->_ORM->all($options['element'], $options['where'], [
+			$where = is_callable($options['where']) ? $options['where']($filters) : [];
+			$list = $this->model->_ORM->all($options['element'], $where, [
 				'table' => $options['table'],
 				'joins' => $options['joins'],
 				'limit' => $options['limit'],

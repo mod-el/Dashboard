@@ -21,7 +21,7 @@ abstract class Card
 		$this->idx = $idx;
 	}
 
-	abstract public function render(array $options, array $filters = []);
+	abstract public function render(array $options, array $filters = []): void;
 
 	protected function getBasicOptions(array $options): array
 	{
@@ -79,7 +79,7 @@ abstract class Card
 		return $options;
 	}
 
-	protected function renderTitle(array $options)
+	protected function renderTitle(array $options): void
 	{
 		if ($options['title'] ?? null) {
 			?>
@@ -88,7 +88,7 @@ abstract class Card
 		}
 	}
 
-	protected function renderListLink(array $options)
+	protected function renderListLink(array $options): void
 	{
 		if ($options['rule'] ?? null) {
 			?>
